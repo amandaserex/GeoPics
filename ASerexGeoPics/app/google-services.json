@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "635658141938",
+    "firebase_url": "https://aserexgeopics-default-rtdb.firebaseio.com",
+    "project_id": "aserexgeopics",
+    "storage_bucket": "aserexgeopics.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635658141938:android:b583676b3d15f83b85d06b",
+        "android_client_info": {
+          "package_name": "edu.ucsb.cs.cs184.amandaserex.aserexgeopics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "635658141938-rlhi60rgbab9r7bm0pshgq1jvmv5m56d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUs-rzfV4o834XIZmLzZl9oZhhfLavlUs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "635658141938-rlhi60rgbab9r7bm0pshgq1jvmv5m56d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
