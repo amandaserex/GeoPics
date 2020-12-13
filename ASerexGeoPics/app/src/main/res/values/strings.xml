@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ASerexGeoPics</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_post_fragment">New Post</string>
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
@@ -24,4 +25,5 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="apples">\@strings/userName</string>
     <string name="comment">Add comment</string>
+    <string name="title_activity_post">PostActivity</string>
 </resources>

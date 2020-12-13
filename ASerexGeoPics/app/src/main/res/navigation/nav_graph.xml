@@ -2,12 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/mapsActivity2">
-    <activity
-        android:id="@+id/mapsActivity2"
-        android:name="edu.ucsb.cs.cs184.amandaserex.aserexgeopics.MapsActivity"
-        android:label="MapsActivity" />
+    android:id="@+id/nav_graph">
     <activity
         android:id="@+id/login"
         android:name="edu.ucsb.cs.cs184.amandaserex.aserexgeopics.Login"
