@@ -24,7 +24,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ASerexGeoPics"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:configChanges="orientation|screenSize">
 
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
@@ -34,6 +35,7 @@
         <activity
             android:name=".PostActivity"
             android:label="@string/title_activity_post"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.ASerexGeoPics.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,6 +49,7 @@
         -->
         <activity
             android:name=".Login"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

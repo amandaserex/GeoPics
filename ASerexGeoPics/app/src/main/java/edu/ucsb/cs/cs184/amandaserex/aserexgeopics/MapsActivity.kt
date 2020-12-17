@@ -1,6 +1,7 @@
 package edu.ucsb.cs.cs184.amandaserex.aserexgeopics
 
 import android.Manifest
+import android.app.ActionBar
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -10,6 +11,7 @@ import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -33,6 +35,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -74,11 +77,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         override fun getInfoContents(marker: Marker): View {
+            mMarker = marker
             rendowWindowText(marker, mWindow)
             return mWindow
         }
 
         override fun getInfoWindow(marker: Marker): View? {
+            mMarker = marker
             rendowWindowText(marker, mWindow)
             return mWindow
         }
@@ -185,7 +190,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (GlobalVars.addNew) {
             val database = Firebase.database
             val myRef = database.getReference("points")
-
             val newPoint = myRef.push()
             val fbId = newPoint.child("firebaseID")
             fbId.setValue(newPoint.key)
@@ -231,9 +235,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         heart.setOnClickListener { view ->
             if(GlobalVars.image == ""){
-
+                val snackbar = Snackbar.make(
+                        view,
+                        "Please click on a marker to like it",
+                        Snackbar.LENGTH_LONG
+                )
+                val layoutParams = ActionBar.LayoutParams(snackbar.view.layoutParams)
+                layoutParams.gravity = Gravity.TOP
+                snackbar.view.layoutParams = layoutParams
+                snackbar.show()
             }
             else{
+                GlobalVars.window.addLike()
 
                 val database = Firebase.database
                 val myRef = database.getReference("points").orderByKey()
@@ -242,9 +255,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         for (postSnapshot in dataSnapshot.children) {
                             val options: BitmapFactory.Options = BitmapFactory.Options()
                             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                            if (GlobalVars.image == postSnapshot.child("image").value){
+                            if (GlobalVars.window.mMarker.snippet == postSnapshot.child("image").value){
                                 GlobalVars.firebaseID = postSnapshot.key.toString()
                                 GlobalVars.likes = postSnapshot.child("likes").value.toString()
+                                //database.getReference("points").child(GlobalVars.firebaseID).child("likes").setValue((GlobalVars.likes.toFloat()+1).toString())
                             }
                         }
                     }
@@ -255,7 +269,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 })
                 database.getReference("points").child(GlobalVars.firebaseID).child("likes").setValue((GlobalVars.likes.toFloat()+1).toString())
-                GlobalVars.window.addLike()
             }
         }
 
@@ -293,7 +306,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.setInfoWindowAdapter(CustomInfoWindowForGoogleMap(this))
     }
 
-    fun addLike(view: View) {}
+    override fun onStop() {
+        super.onStop()
+        val database = Firebase.database
+        database.getReference("points").child(GlobalVars.firebaseID).child("likes").setValue((GlobalVars.likes.toFloat() + 1).toString())
+    }
 
 }
 
