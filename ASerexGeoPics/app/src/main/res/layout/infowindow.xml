@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:weightSum="4"
+    android:onClick="doIt">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:onClick="doIt"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="fitCenter"
+            android:weightSum="2" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="5"
+            android:minLines="1"
+            android:textColor="#000"
+            android:textSize="14sp"
+            android:weightSum="2" />
+
+        <TextView
+            android:id="@+id/likeText"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:text="Likes:"
+            android:textColor="#000"
+            android:textSize="14sp"
+            android:weightSum="2" />
+
+        <TextView
+            android:id="@+id/likeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:backgroundTint="#dddddd"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/like"
+            android:textColor="@color/black"
+            android:weightSum="1" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

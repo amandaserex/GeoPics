@@ -3,11 +3,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_post_fragment">New Post</string>
     <string name="welcome">"Welcome!"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_login">LoginActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -16,14 +11,10 @@
     <string name="previous">Previous</string>
     <string name="userName">Please Sign In!</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
-    <string name="apples">\@strings/userName</string>
     <string name="comment">Add comment</string>
     <string name="title_activity_post">PostActivity</string>
+    <string name="cancel">Cancel</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="post">Post</string>
+    <string name="like">Like</string>
 </resources>
