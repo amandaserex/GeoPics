@@ -49,17 +49,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         var image = ""
         var addNew = false
         var firebaseID = ""
-        var tempLikes = 0
+        lateinit var window : CustomInfoWindowForGoogleMap
     }
 
     inner class CustomInfoWindowForGoogleMap(context: Context) : GoogleMap.InfoWindowAdapter {
-
+        lateinit var mMarker : Marker
+        lateinit var mView : View
         var mContext = context
         var mWindow = (context as Activity).layoutInflater.inflate(R.layout.infowindow, null)
 
 
-
         private fun rendowWindowText(marker: Marker, view: View) {
+            mMarker = marker
+            mView = view
             GlobalVars.image = marker.snippet
             val tvTitle = view.findViewById<TextView>(R.id.title)
             tvTitle.text = marker.title
@@ -89,6 +91,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
 
             })
+            GlobalVars.window = this
         }
 
         override fun getInfoContents(marker: Marker): View {
@@ -99,6 +102,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         override fun getInfoWindow(marker: Marker): View? {
             rendowWindowText(marker, mWindow)
             return mWindow
+        }
+
+        fun addLike(){
+            mMarker.zIndex = mMarker.zIndex + 1.0F
+            val likeButton = mWindow.findViewById<TextView>(R.id.likeButton)
+            likeButton.text = (likeButton.text.toString().toFloat() + 1).toString()
+            Log.e("TAG",likeButton.text.toString())
+            rendowWindowText(mMarker, mView)
+
         }
     }
 
@@ -209,7 +221,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             comment.setValue(GlobalVars.comment)
             val likes = newPoint.child("likes")
             likes.setValue("0.0")
-            GlobalVars.tempLikes = 0
             val image = newPoint.child("image")
             image.setValue(GlobalVars.image)
         }
@@ -219,6 +230,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(37.5485, -121.9886), 14.0f))//zoom on Fremont
 
         if(GlobalVars.addNew){
             mMap.addMarker(
@@ -237,8 +249,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         val heart: FloatingActionButton = findViewById<FloatingActionButton>(R.id.fabHeart)
-
-        val fab: FloatingActionButton = findViewById<FloatingActionButton>(R.id.fab)
 
         heart.setOnClickListener { view ->
             if(GlobalVars.image == ""){
@@ -265,14 +275,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
 
                 })
-                GlobalVars.tempLikes = (GlobalVars.likes.toFloat()+1).toInt()
                 database.getReference("points").child(GlobalVars.firebaseID).child("likes").setValue((GlobalVars.likes.toFloat()+1).toString())
+                GlobalVars.window.addLike()
             }
         }
 
 
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(37.5485, -121.9886), 14.0f))
+        val fab: FloatingActionButton = findViewById<FloatingActionButton>(R.id.fab)
 
         fab.setOnClickListener { view ->
 
@@ -304,6 +313,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         mMap.setInfoWindowAdapter(CustomInfoWindowForGoogleMap(this))
     }
+
+    fun addLike(view: View) {}
 
 }
 
