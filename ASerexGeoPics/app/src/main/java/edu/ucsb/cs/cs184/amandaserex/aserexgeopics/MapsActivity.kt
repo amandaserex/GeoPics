@@ -70,27 +70,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val likeButton = view.findViewById<TextView>(R.id.likeButton)
             likeButton.text = marker.zIndex.toInt().toString()
 
-
-
-            val database = Firebase.database
-            val myRef = database.getReference("points").orderByKey()
-
-            myRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (postSnapshot in dataSnapshot.children) {
-                        val options: BitmapFactory.Options = BitmapFactory.Options()
-                        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                        if (GlobalVars.image == postSnapshot.child("image").value){
-                            likeButton.text = postSnapshot.child("likes").value.toString()
-                        }
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-
-            })
             GlobalVars.window = this
         }
 
@@ -107,10 +86,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         fun addLike(){
             mMarker.zIndex = mMarker.zIndex + 1.0F
             val likeButton = mWindow.findViewById<TextView>(R.id.likeButton)
-            likeButton.text = (likeButton.text.toString().toFloat() + 1).toString()
+            likeButton.text = (mMarker.zIndex.toInt()).toString()
             Log.e("TAG",likeButton.text.toString())
-            rendowWindowText(mMarker, mView)
-
+            mMarker.hideInfoWindow()
+            mMarker.showInfoWindow()
         }
     }
 
