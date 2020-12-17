@@ -92,7 +92,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             mMarker.zIndex = mMarker.zIndex + 1.0F
             val likeButton = mWindow.findViewById<TextView>(R.id.likeButton)
             likeButton.text = (mMarker.zIndex.toInt()).toString()
-            Log.e("TAG",likeButton.text.toString())
             mMarker.hideInfoWindow()
             mMarker.showInfoWindow()
         }

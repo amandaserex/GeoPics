@@ -21,6 +21,10 @@ import java.io.OutputStream
 
 class PostActivity : AppCompatActivity() {
 
+    object GlobalVars{
+        lateinit var imageLocation : Bitmap
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
@@ -97,11 +101,31 @@ class PostActivity : AppCompatActivity() {
 
         if (resultCode == RESULT_OK) {
                 val photo: Bitmap = data?.extras?.get("data") as Bitmap
+                GlobalVars.imageLocation= photo
                 takePhoto.setImageBitmap(photo)
                 createImageFile()
             }
 
         }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.run{
+            val edit: EditText = findViewById<EditText>(R.id.editText)
+            putString("COMMENT_VALUE", edit.text.toString())
+
+        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState.run{
+            val edit: EditText = findViewById<EditText>(R.id.editText)
+            val takePhoto: ImageView = findViewById<ImageView>(R.id.imageView2)
+            edit.setText(getString("COMMENT_VALUE"))
+            takePhoto.setImageBitmap(GlobalVars.imageLocation)
+        }
+    }
 
 
 }
