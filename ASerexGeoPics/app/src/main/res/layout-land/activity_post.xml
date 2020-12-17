@@ -7,6 +7,19 @@
     android:outlineProvider="none"
     tools:context=".PostActivity">
 
+    <TextView
+        android:id="@+id/AddImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't forget to add a picture!"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.060000002" />
+
 
     <EditText
         android:id="@+id/editText"

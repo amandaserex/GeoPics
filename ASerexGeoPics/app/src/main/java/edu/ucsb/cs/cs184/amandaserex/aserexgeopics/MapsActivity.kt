@@ -8,12 +8,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,6 +37,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
+import kotlin.math.roundToLong
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -66,12 +68,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             mMarker = marker
             mView = view
             GlobalVars.image = marker.snippet
+            val lat = view.findViewById<TextView>(R.id.lat)
+            lat.text = "Lat: "+ (Math.round(mMarker.position.latitude * 1000.0) / 1000.0) + " Long: " + (Math.round(mMarker.position.longitude * 1000.0) / 1000.0)
             val tvTitle = view.findViewById<TextView>(R.id.title)
             tvTitle.text = marker.title
-            val picture = view.findViewById<ImageView>(R.id.picture)
-            picture.setImageBitmap(BitmapFactory.decodeFile(marker.snippet, BitmapFactory.Options()))
+            if(marker.snippet == "DifUser") {
+                val picture = view.findViewById<ImageView>(R.id.picture)
+                picture.setImageBitmap(null)
+            }
+            else{
+                val picture = view.findViewById<ImageView>(R.id.picture)
+                picture.setImageBitmap(BitmapFactory.decodeFile(marker.snippet, BitmapFactory.Options()))
+            }
             val likeButton = view.findViewById<TextView>(R.id.likeButton)
-            likeButton.text = marker.zIndex.toInt().toString()
+            likeButton.text = "Likes: " + marker.zIndex.toInt().toString()
 
             GlobalVars.window = this
         }
@@ -152,8 +162,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     val name = postSnapshot.child("name").getValue(String::class.java)
                     val options: BitmapFactory.Options = BitmapFactory.Options()
                     options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                    if (name == Login.GlobalVars.userName){
-                        if(postSnapshot.child("likes").value != null) {
+                    if (name != Login.GlobalVars.userName) {
+                        if (postSnapshot.child("likes").value != null) {
+                            mMap.addMarker(
+                                    MarkerOptions()
+                                            .position(
+                                                    LatLng(
+                                                            postSnapshot.child("latitude")
+                                                                    .getValue() as Double,
+                                                            postSnapshot.child(
+                                                                    "longitude"
+                                                            ).getValue() as Double
+                                                    )
+                                            )
+                                            .snippet("DifUser")
+                                            .title(postSnapshot.child("comment").value as String?)
+                                            .zIndex((postSnapshot.child("likes").value as String).toFloat())
+                            )
+                        }
+                    }
+                    if (name == Login.GlobalVars.userName) {
+                        if (postSnapshot.child("likes").value != null) {
                             mMap.addMarker(
                                     MarkerOptions()
                                             .position(
@@ -254,10 +283,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         for (postSnapshot in dataSnapshot.children) {
                             val options: BitmapFactory.Options = BitmapFactory.Options()
                             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                            if (GlobalVars.window.mMarker.snippet == postSnapshot.child("image").value){
+                            if (GlobalVars.window.mMarker.snippet == postSnapshot.child("image").value) {
                                 GlobalVars.firebaseID = postSnapshot.key.toString()
                                 GlobalVars.likes = postSnapshot.child("likes").value.toString()
-                                //database.getReference("points").child(GlobalVars.firebaseID).child("likes").setValue((GlobalVars.likes.toFloat()+1).toString())
                             }
                         }
                     }
@@ -267,7 +295,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
 
                 })
-                database.getReference("points").child(GlobalVars.firebaseID).child("likes").setValue((GlobalVars.likes.toFloat()+1).toString())
+                database.getReference("points").child(GlobalVars.firebaseID).child("likes").setValue((GlobalVars.likes.toFloat() + 1).toString())
             }
         }
 

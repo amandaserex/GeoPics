@@ -12,7 +12,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -23,6 +25,7 @@ class PostActivity : AppCompatActivity() {
 
     object GlobalVars{
         lateinit var imageLocation : Bitmap
+        var completed : Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,10 +63,17 @@ class PostActivity : AppCompatActivity() {
 
 
         addButton.setOnClickListener(View.OnClickListener {
-            MapsActivity.GlobalVars.comment = edit.text.toString()
-            MapsActivity.GlobalVars.addNew = true
-            val i = Intent(this, MapsActivity::class.java)
-            startActivity(i)
+            if(GlobalVars.completed) {
+                GlobalVars.completed = false
+                MapsActivity.GlobalVars.comment = edit.text.toString()
+                MapsActivity.GlobalVars.addNew = true
+                val i = Intent(this, MapsActivity::class.java)
+                startActivity(i)
+            }
+            else{
+                val warning: TextView = findViewById<TextView>(R.id.AddImage)
+                warning.visibility = View.VISIBLE
+            }
         })
     }
 
@@ -104,6 +114,9 @@ class PostActivity : AppCompatActivity() {
                 GlobalVars.imageLocation= photo
                 takePhoto.setImageBitmap(photo)
                 createImageFile()
+                GlobalVars.completed = true
+            val warning: TextView = findViewById<TextView>(R.id.AddImage)
+            warning.visibility = View.GONE
             }
 
         }
@@ -121,9 +134,11 @@ class PostActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         savedInstanceState.run{
             val edit: EditText = findViewById<EditText>(R.id.editText)
-            val takePhoto: ImageView = findViewById<ImageView>(R.id.imageView2)
             edit.setText(getString("COMMENT_VALUE"))
-            takePhoto.setImageBitmap(GlobalVars.imageLocation)
+            if(GlobalVars.completed) {
+                val takePhoto: ImageView = findViewById<ImageView>(R.id.imageView2)
+                takePhoto.setImageBitmap(GlobalVars.imageLocation)
+            }
         }
     }
 

@@ -5,15 +5,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
     android:orientation="horizontal"
-    android:padding="10dp"
-    android:weightSum="4">
+    android:weightSum="4"
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:background="#d1d1d1"
         android:orientation="vertical"
-        android:weightSum="2">
+        android:weightSum="2"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/lat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:minLines="1"
+            android:textColor="#000"
+            android:layout_gravity="center_horizontal"
+            android:textSize="14sp"
+            android:weightSum="2"
+            android:textStyle="bold"/>
 
 
         <ImageView
@@ -33,23 +46,14 @@
             android:minLines="1"
             android:textColor="#000"
             android:textSize="14sp"
-            android:weightSum="2" />
+            android:weightSum="2"
+            android:textStyle="italic"/>
 
-        <TextView
-            android:id="@+id/likeText"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:text="Likes:"
-            android:textColor="#000"
-            android:textSize="14sp"
-            android:weightSum="2" />
 
         <TextView
             android:id="@+id/likeButton"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:backgroundTint="#dddddd"
