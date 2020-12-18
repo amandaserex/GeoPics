@@ -12,20 +12,35 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 
 
 class Login : AppCompatActivity() {
 
     lateinit var mGoogleSignInClient: GoogleSignInClient
+    val RC_SIGN_IN: Int = 1
+    lateinit var mGoogleSignInOptions: GoogleSignInOptions
+    private lateinit var firebaseAuth: FirebaseAuth
+
 
     object GlobalVars {
         var userName = "No Name"
     }
 
+    private fun configureGoogleSignIn() {
+        mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+
+        configureGoogleSignIn()
 
         val button = findViewById<com.google.android.gms.common.SignInButton>(R.id.sign_in_button)
 
@@ -45,6 +60,8 @@ class Login : AppCompatActivity() {
         button.setOnClickListener(listener)
 
     }
+
+
 
     private fun signIn() {
         val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
